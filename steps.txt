@@ -10,3 +10,8 @@ yacc -
 on cmd ,go to your folder where the file is saved 
 yacc -d filename.y
 filename.exe
+
+or
+
+Write gcc filename. tab. c -o filename.exe
+Then filename.exe (you'll get the output)
