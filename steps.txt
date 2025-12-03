@@ -1,8 +1,12 @@
-lex/yacc -
+lex -
 
 on cmd ,go to your folder where the file is saved 
 Then write - flex filename.l
-
 Then- g++ lex.yy.c -o filename.exe
-
 Then only - filename Without any extension
+
+yacc - 
+
+on cmd ,go to your folder where the file is saved 
+yacc -d filename.y
+filename.exe
