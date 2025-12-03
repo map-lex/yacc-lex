@@ -1,0 +1,43 @@
+%{
+#include <stdio.h>
+#include <stdlib.h>
+
+int paren_count = 0;  // to check balanced parentheses
+int valid = 1;         // flag for valid expression
+%}
+
+%%
+
+[0-9]+      { /* integers are valid */ }
+
+[ \t]+      { /* ignore spaces */ }
+
+"("         { paren_count++; }
+
+")"         { 
+                paren_count--; 
+                if(paren_count < 0) valid = 0;  // more closing than opening
+            }
+
+[\+\-\*/]   { /* operators are valid */ }
+
+\n          { 
+                if(valid && paren_count == 0)
+                    printf("Valid Expression\n");
+                else
+                    printf("Invalid Expression\n");
+
+                // reset for next line
+                paren_count = 0;
+                valid = 1;
+            }
+
+.           { valid = 0; }  // any other character is invalid
+
+%%
+
+int main() {
+    printf("Enter arithmetic expressions (press Enter after each expression):\n");
+    yylex();
+    return 0;
+}

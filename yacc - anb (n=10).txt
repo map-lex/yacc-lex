@@ -1,0 +1,40 @@
+%{
+#include <stdio.h>
+#include <stdlib.h>
+
+int a_count = 0;
+
+int yylex() {
+    int c = getchar();
+    if(c == 'a') return 'a';
+    if(c == 'b') return 'b';
+    if(c == '\n' || c == EOF) return 0;
+    return c;
+}
+
+void yyerror(char *s) {
+    printf("Invalid string\n");
+}
+%}
+
+%%
+
+S : Aseq 'b' {
+        if(a_count >= 10)
+            printf("Valid string\n");
+        else
+            printf("Invalid string: need at least 10 a's\n");
+    }
+  ;
+
+Aseq : Aseq 'a'   { a_count++; }
+     | 'a'        { a_count = 1; }
+     ;
+
+%%
+
+int main() {
+    printf("Enter string: ");
+    yyparse();
+    return 0;
+}

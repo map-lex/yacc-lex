@@ -1,0 +1,38 @@
+%{
+#include <stdio.h>
+int lines = 0;   // to count lines
+int chars = 0;   // to count characters
+%}
+
+%%
+
+\n
+    { lines++; chars++; }   // newline increases both line & char count
+.   
+    { chars++; }            // any other character increases char count
+
+%%
+
+int main(int argc, char *argv[])
+{
+    if (argc > 1) {
+        FILE *f = fopen(argv[1], "r");   // open file in read mode
+        if (!f) {
+            printf("could not open file %s\n", argv[1]);
+            return 1;
+        }
+        yyin = f;   // point Lex input to file
+    }
+
+    yylex();   // start scanning
+
+    printf("Number of lines: %d\n", lines);
+    printf("Number of characters: %d\n", chars);
+
+    return 0;
+}
+
+int yywrap()
+{
+    return 1;
+}

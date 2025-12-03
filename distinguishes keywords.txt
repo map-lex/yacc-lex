@@ -1,0 +1,44 @@
+%{
+#include <stdio.h>
+#include <ctype.h>
+%}
+
+/* List of keywords */
+KEYWORD    (int|float|if|else|while|for|return|void|char|double)
+
+%%
+
+/* Keywords */
+{KEYWORD}      { printf("Keyword: %s\n", yytext); }
+
+/* Identifiers (variable names) */
+[A-Za-z_][A-Za-z0-9_]*  { printf("Identifier: %s\n", yytext); }
+
+/* Float numbers (with decimal) */
+[0-9]+\.[0-9]+           { printf("Float: %s\n", yytext); }
+
+/* Integers */
+[0-9]+                   { printf("Integer: %s\n", yytext); }
+
+/* Operators */
+"=="|"!="|"<="|">="|"="|"+"|"-"|"*"|"/"|"<"|">" { printf("Operator: %s\n", yytext); }
+
+/* Single-line comments */
+"//".*                   { printf("Comment: %s\n", yytext); }
+
+/* Multi-line comments */
+"/*"([^*]|\*+[^*/])*\*+"/"   { printf("Comment: %s\n", yytext); }
+
+/* Ignore whitespaces and tabs */
+[ \t\n]+   ;
+
+/* Any other character */
+.          { printf("Unknown token: %s\n", yytext); }
+
+%%
+
+int main() {
+    printf("Enter code (Ctrl+D to end input on Linux/Mac, Ctrl+Z + Enter on Windows):\n");
+    yylex();
+    return 0;
+}

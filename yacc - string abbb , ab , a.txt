@@ -1,0 +1,36 @@
+%{
+#include <stdio.h>
+#include <stdlib.h>
+
+int yylex() {
+    int c = getchar();
+    if (c == 'a') return 'a';
+    if (c == 'b') return 'b';
+    if (c == '\n' || c == EOF) return 0;
+    return c;
+}
+
+void yyerror(char *s) {
+    printf("Invalid string\n");
+}
+%}
+
+%%
+
+S : A B { printf("Valid string\n"); }
+  ;
+
+A : 'a' A 'b'
+  | 'a' 'b'
+  ;
+
+B :
+  ;
+
+%%
+
+int main() {
+    printf("Enter string: ");
+    yyparse();
+    return 0;
+}

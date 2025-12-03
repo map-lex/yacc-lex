@@ -1,0 +1,36 @@
+%{
+#include <stdio.h>
+%}
+
+%%
+
+.   { /* ignore everything */ }
+
+%%
+
+int main() {
+    FILE *fp = fopen("output.c", "w");
+    if(fp == NULL) {
+        printf("Cannot create output file\n");
+        return 1;
+    }
+
+    // Write the C program to the file
+    fprintf(fp, "#include <stdio.h>\n");
+    fprintf(fp, "int main() {\n");
+    fprintf(fp, "    char str[] = \"abcd\";\n");
+    fprintf(fp, "    int len = 4;\n");
+    fprintf(fp, "    for(int i = len; i > 0; i--) {\n");
+    fprintf(fp, "        for(int j = 0; j < i; j++) {\n");
+    fprintf(fp, "            putchar(str[j]);\n");
+    fprintf(fp, "        }\n");
+    fprintf(fp, "        printf(\"\\n\");\n");
+    fprintf(fp, "    }\n");
+    fprintf(fp, "    return 0;\n");
+    fprintf(fp, "}\n");
+
+    fclose(fp);
+    printf("C program generated in output.c\n");
+
+    return 0;
+}

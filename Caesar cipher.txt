@@ -1,0 +1,28 @@
+%{
+#include <stdio.h>
+%}
+
+%%
+[a-z] {
+    char c = yytext[0];
+    c = ((c - 'a' + 3) % 26) + 'a';    // shift by 3 in lowercase
+    printf("%c", c);
+}
+[A-Z] {
+    char c = yytext[0];
+    c = ((c - 'A' + 3) % 26) + 'A';    // shift by 3 in uppercase
+    printf("%c", c);
+}
+.   { printf("%s", yytext); }          // print other characters as is
+%%
+
+int main(int argc, char *argv[])
+{
+    yylex();     // run lexer
+    return 0;
+}
+
+int yywrap()
+{
+    return 1;
+}

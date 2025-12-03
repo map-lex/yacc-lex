@@ -1,0 +1,27 @@
+%{
+#include <stdio.h>
+#include <string.h>
+
+char longest[1000];   // store the longest word
+%}
+
+%%
+
+[A-Za-z]+ {
+    if(strlen(yytext) > strlen(longest)) {
+        strcpy(longest, yytext);  // update longest word
+    }
+}
+
+\n|.   ;   // ignore everything else (including spaces, punctuation, newline)
+
+%%
+
+int main() {
+    yylex();   // start scanning
+    if(strlen(longest) > 0)
+        printf("Longest word: %s\n", longest);
+    else
+        printf("No words found.\n");
+    return 0;
+}
