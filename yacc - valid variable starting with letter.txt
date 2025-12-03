@@ -1,0 +1,18 @@
+%{
+	#include "prac10.tab.h"
+	#include <iostream>
+	using namespace std;
+%}
+
+%%
+[a-z][0-9]     { return VAR; }
+[0-9]+         { yylval = atoi(yytext);return NUM; }
+[+\-*/()]      { return yytext[0]; }
+[ \t]          {	} ; 
+\n             { return '\n'; }
+.              { return -1; }  // Invalid character
+%%
+
+int yywrap() {
+    return 1;
+}

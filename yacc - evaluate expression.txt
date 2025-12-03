@@ -1,0 +1,44 @@
+%{
+#include <iostream>
+using namespace std;
+int yylex();
+void yyerror(const char *s);
+%}
+
+%token VAR
+%token NUM
+
+%left '+' '-'
+%left '*' '/'
+
+%%
+
+
+input:
+    input expr '\n'   { cout<<"Valid expression\n"<<$2; }
+	|
+  ;
+
+expr:
+    expr '+' expr   {$$ = $1 + $3}
+  | expr '-' expr   {$$ = $1 - $3} 
+  | expr '*' expr   {$$ = $1 * $3}
+  | expr '/' expr   {if ($3 == 0) {
+                          yyerror("Division by zero");
+                          $$ = 0;
+                      } else {
+                          $$ = $1 / $3;}}
+  | '(' expr ')'    {$$ = $2}
+  | NUM   		{$$ = $1}          
+  | VAR          {$$ = $1}
+  ;
+
+%%
+void yyerror(const char *s) {
+    cout<<"Error:"<< s;
+}
+int main() {
+    cout<<"Enter an expression or variable:\n";
+    yyparse();
+    return 0;
+}
